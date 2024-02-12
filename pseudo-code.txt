@@ -1,0 +1,21 @@
+FONCTION transpiler(programme_brumeux, possibilites_longueur, dictionnaire) RETOURNE chaine
+    INITIALISER programme_decouvert COMME chaine VIDE
+    INITIALISER i COMME entier = 0
+    INITIALISER possibilites_triees COMME liste = trier(possibilites_longueur, ordre décroissant)
+
+    TANT QUE i < longueur(programme_brumeux) FAIRE
+        POUR CHAQUE longueur DANS possibilites_triees FAIRE
+            INITIALISER debut COMME entier = i
+            INITIALISER fin COMME entier = i + longueur
+            INITIALISER mot_asm COMME sous-chaine(programme_brumeux, debut, fin)
+
+            SI mot_asm EXISTE DANS clefs(dictionnaire) ALORS
+                i += longueur
+                programme_decouvert += valeur(dictionnaire[mot_asm])
+                SORTIR DE LA BOUCLE FOR
+            FIN SI
+        FIN POUR
+    FIN TANT QUE
+
+    RETOURNER programme_decouvert
+FIN FONCTION
