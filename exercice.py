@@ -29,10 +29,13 @@ def charger_contenu(chemin_fichier: str) -> str:
 
 def ajouter_caracteres_dico(dictionnaire: dict) -> dict:
     prefixe = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['PREFIXE']
-    suffixe = None  # TODO Ajouter cette constante
-
-    # TODO Parcourir les lettres, chiffres et symboles à ajouter au dictionnaire
-    # TODO Ajouter le préfixe et le suffixe au caractère parcouru au sein de votre dictionnaire
+    suffixe = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['SUFFIXE']
+    lettres = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['LETTRES']
+    chiffres = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['CHIFFRES']
+    symboles = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['SYMBOLES']
+    
+    for x in lettres + chiffres + symboles: # TODO Parcourir les lettres, chiffres et symboles à ajouter au dictionnaire
+        dictionnaire[prefixe + x + suffixe] = hex(ord(x)) # TODO Ajouter le préfixe et le suffixe au caractère parcouru au sein de votre dictionnaire
 
     return dictionnaire
 
@@ -46,7 +49,10 @@ def ajouter_caracteres_dico(dictionnaire: dict) -> dict:
 
 
 def ajouter_codes_morts_dico(dictionnaire: dict) -> dict:
-    # TODO Similairement à 2.0, ajouter les codes morts à votre dictionnaire
+    codes_morts = __CST__.CONSTANTES['AJOUTER_CODES_MORTS_DICO']['CODES_MORTS']
+
+    for valeur in codes_morts: # TODO Similairement à 2.0, ajouter les codes morts à votre dictionnaire
+        dictionnaire[valeur] = valeur, codes_morts
 
     return dictionnaire
 
@@ -60,11 +66,14 @@ def ajouter_codes_morts_dico(dictionnaire: dict) -> dict:
 
 
 def ajouter_fonctions_asm_dico(dictionnaire: dict) -> dict:
-    prefixe = None  # TODO Ajouter cette constante pour les codes en assembleur
-    suffixe = None  # TODO Ajouter cette constante pour les codes en assembleur
+    prefixe = __CST__.CONSTANTES['AJOUTER_FONCTIONS_ASM_DICO']['PREFIXE']  # TODO Ajouter cette constante pour les codes en assembleur
+    suffixe = __CST__.CONSTANTES['AJOUTER_FONCTIONS_ASM_DICO']['SUFFIXE']  # TODO Ajouter cette constante pour les codes en assembleur
+    symboles = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['SYMBOLES']
+    fonctions_asm = __CST__.CONSTANTES['AJOUTER_FONCTIONS_ASM_DICO']['FONCTIONS_ASM']
 
-    # TODO Parcourir les lettres, chiffres et symboles à ajouter au dictionnaire
-    # TODO Ajouter le préfixe et le suffixe au caractère assembleur parcouru au sein de votre dictionnaire
+    for valeur in prefixe + suffixe + symboles: # TODO Parcourir les lettres, chiffres et symboles à ajouter au dictionnaire
+        for element in fonctions_asm: # TODO Ajouter le préfixe et le suffixe au caractère assembleur parcouru au sein de votre dictionnaire
+            dictionnaire[prefixe + element + suffixe] = element
 
     return dictionnaire
 
@@ -78,7 +87,10 @@ def ajouter_fonctions_asm_dico(dictionnaire: dict) -> dict:
 
 
 def ajouter_autres_symboles_dico(dictionnaire: dict) -> dict:
-    # TODO Mettre à jour le dictionnaire avec les autres symboles
+    autres_symboles = __CST__.CONSTANTES['AJOUTER_AUTRES_SYMBOLES_DICO']['AUTRES_SYMBOLES']
+
+    for element in autres_symboles.items(): # TODO Mettre à jour le dictionnaire avec les autres symboles
+        dictionnaire[element] = autres_symboles
 
     return dictionnaire
 
@@ -95,16 +107,16 @@ def creer_dictionnaire() -> dict:
     dictionnaire: dict = dict()
 
     # TODO Ajouter les caractères au dictionnaire (appel de votre fonction)
-    dictionnaire = ...
+    dictionnaire = ajouter_caracteres_dico(dictionnaire)
 
     # TODO Ajouter les codes morts au dictionnaire (appel de votre fonction)
-    dictionnaire = ...
+    dictionnaire = ajouter_codes_morts_dico(dictionnaire)
 
     # TODO Ajouter les fonctions assembleur au dictionnaire (appel de votre fonction)
-    dictionnaire = ...
+    dictionnaire = ajouter_fonctions_asm_dico(dictionnaire)
 
     # TODO Ajouter les autres symboles au dictionnaire (appel de votre fonction)
-    dictionnaire = ...
+    dictionnaire = ajouter_autres_symboles_dico(dictionnaire)
 
     return dictionnaire
 
@@ -120,7 +132,8 @@ def creer_dictionnaire() -> dict:
 def calculer_longueur_clefs_dictionnaire(dictionnaire: dict) -> set[int]:
     possibilites_longueur: set[int] = set()
 
-    # TODO Parcourir toutes les clefs du dictionnaire et ajouter leurs longueurs à possibilites_longueur
+    for key in dictionnaire: # TODO Parcourir toutes les clefs du dictionnaire et ajouter leurs longueurs à possibilites_longueur
+        possibilites_longueur.add(len(key))
 
     return possibilites_longueur
 
