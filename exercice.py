@@ -2,7 +2,7 @@ import assets.constants.constants as __CST__
 
 
 __version__ = "TP2 - Exercice 'Dans la brume...'"
-__author__ = "Nom élève 1 (matricule 1), nom élève 2 (matricule 2)"
+__author__ = "Johnny Jang (2215135), Elion Imeri (2332034)"
 
 
 """
@@ -29,14 +29,15 @@ def charger_contenu(chemin_fichier: str) -> str:
 
 def ajouter_caracteres_dico(dictionnaire: dict) -> dict:
     prefixe = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['PREFIXE']
-    suffixe = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['SUFFIXE']
+    suffixe = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['SUFFIXE']  # TODO Ajouter cette constante
     lettres = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['LETTRES']
     chiffres = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['CHIFFRES']
     symboles = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['SYMBOLES']
-    
-    for x in lettres + chiffres + symboles: # TODO Parcourir les lettres, chiffres et symboles à ajouter au dictionnaire
-        dictionnaire[prefixe + x + suffixe] = hex(ord(x)) # TODO Ajouter le préfixe et le suffixe au caractère parcouru au sein de votre dictionnaire
-
+    # TODO Parcourir les lettres, chiffres et symboles à ajouter au dictionnaire
+    for charactere in lettres + chiffres + symboles:
+    # TODO Ajouter le préfixe et le suffixe au caractère parcouru au sein de votre dictionnaire
+        hex_key = prefixe+hex(ord(charactere))+suffixe
+        dictionnaire[hex_key] = charactere
     return dictionnaire
 
 
@@ -49,11 +50,10 @@ def ajouter_caracteres_dico(dictionnaire: dict) -> dict:
 
 
 def ajouter_codes_morts_dico(dictionnaire: dict) -> dict:
+    # TODO Similairement à 2.0, ajouter les codes morts à votre dictionnaire
     codes_morts = __CST__.CONSTANTES['AJOUTER_CODES_MORTS_DICO']['CODES_MORTS']
-
-    for valeur in codes_morts: # TODO Similairement à 2.0, ajouter les codes morts à votre dictionnaire
-        dictionnaire[valeur] = valeur, codes_morts
-
+    for charactere_mort in codes_morts:
+        dictionnaire[charactere_mort] = ''
     return dictionnaire
 
 
@@ -68,16 +68,24 @@ def ajouter_codes_morts_dico(dictionnaire: dict) -> dict:
 def ajouter_fonctions_asm_dico(dictionnaire: dict) -> dict:
     prefixe = __CST__.CONSTANTES['AJOUTER_FONCTIONS_ASM_DICO']['PREFIXE']  # TODO Ajouter cette constante pour les codes en assembleur
     suffixe = __CST__.CONSTANTES['AJOUTER_FONCTIONS_ASM_DICO']['SUFFIXE']  # TODO Ajouter cette constante pour les codes en assembleur
-    symboles = __CST__.CONSTANTES['AJOUTER_CARACTERES_DICO']['SYMBOLES']
-    fonctions_asm = __CST__.CONSTANTES['AJOUTER_FONCTIONS_ASM_DICO']['FONCTIONS_ASM']
+    asm = __CST__.CONSTANTES['AJOUTER_FONCTIONS_ASM_DICO']['FONCTIONS_ASM']
+    # TODO Parcourir les lettres, chiffres et symboles à ajouter au dictionnaire -> PARCOURIR LES FONCTIONS ASSEMBLEUR
+    abv_map = {
+        'if': 'i',
+        'else': 'e',
+        'while': 'w',
+        'for': 'f',
+        'range': 'r',
+        'try': 't',
+        }
 
-    for valeur in prefixe + suffixe + symboles: # TODO Parcourir les lettres, chiffres et symboles à ajouter au dictionnaire
-        for element in fonctions_asm: # TODO Ajouter le préfixe et le suffixe au caractère assembleur parcouru au sein de votre dictionnaire
-            dictionnaire[prefixe + element + suffixe] = element
+    for value in asm:
+        abbreviation = abv_map.get(value, value)
+        key = prefixe+abbreviation+suffixe
+        dictionnaire[key] = value
+        #print(f"key: {key}, value: {value}, vlaue type: {type(value)}") #debug
 
     return dictionnaire
-
-
 """
  * <2.3.> ajouter_autres_symboles_dico
  * Ajoute uniquement tout autre symbole n'ayant pas encore été ajouté au dictionnaire.
@@ -87,10 +95,11 @@ def ajouter_fonctions_asm_dico(dictionnaire: dict) -> dict:
 
 
 def ajouter_autres_symboles_dico(dictionnaire: dict) -> dict:
-    autres_symboles = __CST__.CONSTANTES['AJOUTER_AUTRES_SYMBOLES_DICO']['AUTRES_SYMBOLES']
-
-    for element in autres_symboles.items(): # TODO Mettre à jour le dictionnaire avec les autres symboles
-        dictionnaire[element] = autres_symboles
+    # TODO Mettre à jour le dictionnaire avec les autres symboles
+    asm_symbole = __CST__.CONSTANTES['AJOUTER_AUTRES_SYMBOLES_DICO']['AUTRES_SYMBOLES']
+    for character_asm, value in asm_symbole.items():
+        dictionnaire[character_asm] = value
+        #print(f"key: {character_asm}, value: {value}, value type: {type(value)}") #debug
 
     return dictionnaire
 
@@ -114,10 +123,10 @@ def creer_dictionnaire() -> dict:
 
     # TODO Ajouter les fonctions assembleur au dictionnaire (appel de votre fonction)
     dictionnaire = ajouter_fonctions_asm_dico(dictionnaire)
-
+    
     # TODO Ajouter les autres symboles au dictionnaire (appel de votre fonction)
     dictionnaire = ajouter_autres_symboles_dico(dictionnaire)
-
+    #print(dictionnaire) #debug
     return dictionnaire
 
 
@@ -132,9 +141,9 @@ def creer_dictionnaire() -> dict:
 def calculer_longueur_clefs_dictionnaire(dictionnaire: dict) -> set[int]:
     possibilites_longueur: set[int] = set()
 
-    for key in dictionnaire: # TODO Parcourir toutes les clefs du dictionnaire et ajouter leurs longueurs à possibilites_longueur
-        possibilites_longueur.add(len(key))
-
+    # TODO Parcourir toutes les clefs du dictionnaire et ajouter leurs longueurs à possibilites_longueur
+    for cle in dictionnaire:
+        possibilites_longueur.add(len(cle))
     return possibilites_longueur
 
 
@@ -156,9 +165,20 @@ def transpiler(programme_brumeux:       str,
                dictionnaire:            dict) -> str:
 
     programme_decouvert: str = ''
-
+    i=0
+    possibilites_triees = sorted(possibilites_longueur, reverse=True)
+    
     # TODO: Référez-vous au pseudo-code fourni dans le fichier texte 'pseudo_code.txt'
-
+    while i < len(programme_brumeux):
+        for longueur in possibilites_triees:
+            debut = i
+            fin = i + longueur
+            mot_asm = programme_brumeux[debut:fin] # pr extraire substring, use slcing [start:end]
+            if mot_asm in dictionnaire:
+                i +=longueur
+                programme_decouvert += dictionnaire[mot_asm]
+                break
+    
     return programme_decouvert
 
 
@@ -188,21 +208,20 @@ def transpilation(chemin_fichier_brumeux:   str = __CST__.CONSTANTES['CHEMINS'][
                   chemin_fichier_transpile: str = __CST__.CONSTANTES['CHEMINS']['TRANSPILE']) -> None:
 
     # TODO Charger le contenu du programme brumeux (appel de votre fonction)
-    # programme_brumeux: str = charger_contenu(chemin_fichier_brumeux)
-
+    programme_brumeux: str = charger_contenu(chemin_fichier_brumeux)
+    
     # TODO Création du dictionnaire (appel de votre fonction)
     # dictionnaire: dict = ...
-    dictionnaire = ...
-
+    dictionnaire = creer_dictionnaire()
+    
     # TODO Calculer les longueurs des clefs de votre dictionnaire (appel de votre fonction)
-    possibilites_longueur: set = calculer_longueur_clefs_dictionnaire(
-        dictionnaire)
+    possibilites_longueur: set = calculer_longueur_clefs_dictionnaire(dictionnaire)
 
     # TODO Effectuer la transpilation de votre programme brumeux en un programme à découvert (appel de votre fonction)
-    programme_decouvert: str = ...
+    programme_decouvert: str = transpiler(programme_brumeux, possibilites_longueur, dictionnaire)
 
     # TODO Écrire votre programme transpilé dans un fichier texte (appel de votre fonction)
-
+    ecriture_programme_transpile(chemin_fichier_transpile, programme_decouvert)
     # --- Ne pas modifier ce qui suit ---
     if __name__ == "__main__":
         print(f'Transpilation terminee avec succes du fichier {chemin_fichier_brumeux} au sein du fichier'
@@ -223,7 +242,12 @@ def obfusquer_contenu(contenu_a_obfusquer:  str,
     contenu_obfusque: str = ''
 
     # TODO Parcourir chaque lettre au sein du contenu à obfusquer
+    for lettre in contenu_a_obfusquer:
     # TODO Ajouter la valeur de votre dictionnaire inversé (la lettre étant la clef) à votre contenu obfusqué
+        if lettre in dictionnaire_inverse:
+            contenu_obfusque += dictionnaire_inverse[lettre]
+        else:
+            contenu_obfusque += lettre
 
     return contenu_obfusque
 
@@ -256,7 +280,10 @@ def ecrire_contenu_obfusque(chemin_fichier_obfusque:    str,
 def inverser_dictionnaire(dictionnaire_initial) -> dict:
     # TODO Inversez votre dictionnaire (clef: valeur -> valeur: clef) afin de créer un
     # dictionnaire permettant de faciliter l'obfuscation du contenu
-    return dictionnaire_initial  # TODO Modifiez ceci
+    dictionnaire_inverse = {}
+    for cle, valeur in dictionnaire_initial.items():
+        dictionnaire_inverse[valeur] = cle
+    return dictionnaire_inverse # TODO Modifiez ceci
 
 
 """
@@ -270,19 +297,19 @@ def inverser_dictionnaire(dictionnaire_initial) -> dict:
 def obfuscation(chemin_fichier_a_obfusquer: str = __CST__.CONSTANTES['CHEMINS']['A_OBFUSQUER'],
                 chemin_fichier_obfusque:    str = __CST__.CONSTANTES['CHEMINS']['OBFUSQUE']) -> None:
     # TODO Obtenir le contenu du fichier à obfusquer (appel de votre fonction)
-    contenu_a_obfusquer: str = ...
+    contenu_a_obfusquer: str = charger_contenu(chemin_fichier_a_obfusquer)
 
     # TODO Création du dictionnaire initial comme pour la transpilation (appel de votre fonction)
-    dictionnaire_initial: dict = ...
+    dictionnaire_initial: dict = creer_dictionnaire()
 
     # TODO Inversion du dictionnaire (appel de votre fonction)
-    dictionnaire_inverse: dict = ...
+    dictionnaire_inverse: dict = inverser_dictionnaire(dictionnaire_initial)
 
     # TODO Obfusquer le contenu du dictionnaire (appel de votre fonction)
-    contenu_obfusque: str = ...
+    contenu_obfusque: str = obfusquer_contenu(contenu_a_obfusquer,dictionnaire_inverse)
 
     # TODO: Écriture du contenu obfusqué au sein d'un fichier texte (appel de votre fonction)
-
+    ecrire_contenu_obfusque(chemin_fichier_obfusque,contenu_obfusque)
     # --- Ne pas modifier ce qui suit ---
     if __name__ == "__main__":
         print(f'Obfuscation terminée avec succès du fichier {chemin_fichier_a_obfusquer} au sein du fichier'
